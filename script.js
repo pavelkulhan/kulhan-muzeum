@@ -75,47 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV (Kritérium zadání splněno!) ---
-    // Na GitHub Pages musíme načítat CSV přes AJAX/Fetch
-    fetch('data.csv')
-        .then(odpoved => odpoved.text()) // Načte obsah jako text
-        .then(data => {
-            const radky = data.split('\n'); // Rozdělí text na řádky
-            const kontejner = document.getElementById('expozice-kontejner');
-            
-            // Ujistíme se, že je kontejner prázdný před načtením
-            kontejner.innerHTML = ''; 
-
-            // Začínáme od indexu 1, abychom přeskočili hlavičku tabulky (Název;Popis...)
-            for (let i = 1; i < radky.length; i++) {
-                // Přeskočí prázdné řádky na konci souboru
-                if (radky[i].trim() === '') continue; 
-
-                const sloupce = radky[i].split(';'); // Rozdělí řádek podle středníku
-                const nazev = sloupce[0];
-                const popis = sloupce[1];
-                const kategorie = sloupce[2];
-                const obrazek = sloupce[3]; // Cesty jsou už v CSV nastaveny na images/..
-
-                // Vytvoření HTML pro každou kartu expozice (opraveno pro tmavé pozadí karet)
-                const kartaHTML = `
-                    <div class="card">
-                        <div class="card-img" style="background-image: url('${obrazek}'); background-size: cover; background-position: center;"></div>
-                        <div class="card-body">
-                            <span class="badge">${kategorie}</span>
-                            <h3>${nazev}</h3>
-                            <p>${popis}</p>
-                        </div>
-                    </div>
-                `;
-                kontejner.innerHTML += kartaHTML; // Přidá hotovou kartu na web
-            }
-        })
-        // Ošetření chyby při načítání
-        .catch(chyba => console.error('Chyba při načítání CSV:', chyba));
-
-});
-
+   
 // --- 3. CAROUSEL (Posouvání prémiových výstav) ---
 // Tato funkce musí být globální (mimo DOMContentLoaded), aby byla přístupná z HTML onclick atributu
 function scrollCarousel(smer) {
