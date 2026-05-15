@@ -74,43 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV ---
-    fetch('data.csv')
-        .then(odpoved => odpoved.text())
-        .then(data => {
-            const radky = data.split(/\r?\n/); 
-            const kontejner = document.getElementById('expozice-kontejner');
-            
-            if (!kontejner) return;
-            kontejner.innerHTML = ''; 
-
-            for (let i = 1; i < radky.length; i++) {
-                if (radky[i].trim() === '') continue; 
-
-                const sloupce = radky[i].split(';'); 
-                
-                if (sloupce.length >= 4) {
-                    const nazev = sloupce[0].trim();
-                    const popis = sloupce[1].trim();
-                    const kategorie = sloupce[2].trim();
-                    const obrazek = sloupce[3].trim();
-
-                    const kartaHTML = `
-                        <div class="card">
-                            <div class="card-img" style="background-image: url('${obrazek}'); background-size: cover; background-position: center;"></div>
-                            <div class="card-body">
-                                <span class="badge">${kategorie}</span>
-                                <h3>${nazev}</h3>
-                                <p>${popis}</p>
-                            </div>
-                        </div>
-                    `;
-                    kontejner.innerHTML += kartaHTML; 
-                }
-            }
-        })
-        .catch(chyba => console.error('Chyba při načítání CSV:', chyba));
-});
+}); // Zde končí DOMContentLoaded
 
 // --- 3. CAROUSEL ---
 function scrollCarousel(smer) {
