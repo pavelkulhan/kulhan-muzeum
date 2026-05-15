@@ -126,3 +126,37 @@ function scrollCarousel(smer) {
         behavior: 'smooth'
     });
 }
+// --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV ---
+    fetch('data.csv')
+        .then(odpoved => odpoved.text())
+        .then(data => {
+            const radky = data.split('\n'); 
+            const kontejner = document.getElementById('expozice-kontejner');
+            
+            kontejner.innerHTML = ''; 
+
+            for (let i = 1; i < radky.length; i++) {
+                if (radky[i].trim() === '') continue; 
+
+                const sloupce = radky[i].split(';'); 
+                const nazev = sloupce[0];
+                const popis = sloupce[1];
+                const kategorie = sloupce[2];
+                
+                // TADY JE TA OPRAVA: .trim() odstraní neviditelné znaky z Windows!
+                const obrazek = sloupce[3].trim(); 
+
+                const kartaHTML = `
+                    <div class="card">
+                        <div class="card-img" style="background-image: url('${obrazek}'); background-size: cover; background-position: center;"></div>
+                        <div class="card-body">
+                            <span class="badge">${kategorie}</span>
+                            <h3>${nazev}</h3>
+                            <p>${popis}</p>
+                        </div>
+                    </div>
+                `;
+                kontejner.innerHTML += kartaHTML; 
+            }
+        })
+        .catch(chyba => console.error('Chyba při načítání CSV:', chyba));
