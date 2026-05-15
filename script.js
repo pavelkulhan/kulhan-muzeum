@@ -86,37 +86,60 @@ function scrollCarousel(smer) {
         behavior: 'smooth'
     });
 }
-// --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV ---
+// --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV (S DIAGNOSTIKOU) ---
     fetch('data.csv')
-        .then(odpoved => odpoved.text())
+        .then(odpoved => {
+            // Kontrola, jestli GitHub ten soubor vůbec našel
+            if (!odpoved.ok) {
+                throw new Error("Soubor data.csv nebyl nalezen (Chyba 404). Zkontroluj název a koncovku na GitHubu!");
+            }
+            return odpoved.text();
+        })
         .then(data => {
-            const radky = data.split('\n'); 
+            const radky = data.split(/\r?\n/); 
             const kontejner = document.getElementById('expozice-kontejner');
             
+            if (!kontejner) return;
             kontejner.innerHTML = ''; 
+
+            let nactenoKaret = 0;
 
             for (let i = 1; i < radky.length; i++) {
                 if (radky[i].trim() === '') continue; 
 
                 const sloupce = radky[i].split(';'); 
-                const nazev = sloupce[0];
-                const popis = sloupce[1];
-                const kategorie = sloupce[2];
                 
-                // TADY JE TA OPRAVA: .trim() odstraní neviditelné znaky z Windows!
-                const obrazek = sloupce[3].trim(); 
+                if (sloupce.length >= 4) {
+                    const nazev = sloupce[0].trim();
+                    const popis = sloupce[1].trim();
+                    const kategorie = sloupce[2].trim();
+                    const obrazek = sloupce[3].trim();
 
-                const kartaHTML = `
-                    <div class="card">
-                        <div class="card-img" style="background-image: url('${obrazek}'); background-size: cover; background-position: center;"></div>
-                        <div class="card-body">
-                            <span class="badge">${kategorie}</span>
-                            <h3>${nazev}</h3>
-                            <p>${popis}</p>
+                    const kartaHTML = `
+                        <div class="card">
+                            <div class="card-img" style="background-image: url('${obrazek}'); background-size: cover; background-position: center;"></div>
+                            <div class="card-body">
+                                <span class="badge">${kategorie}</span>
+                                <h3>${nazev}</h3>
+                                <p>${popis}</p>
+                            </div>
                         </div>
-                    </div>
-                `;
-                kontejner.innerHTML += kartaHTML; 
+                    `;
+                    kontejner.innerHTML += kartaHTML; 
+                    nactenoKaret++;
+                }
+            }
+
+            // Pokud se načetl soubor, ale nebyla v něm správná data
+            if (nactenoKaret === 0) {
+                kontejner.innerHTML = `<p style="color: #ff007f; text-align: center; width: 100%; font-size: 1.2rem;">Soubor se načetl, ale nenašly se v něm žádné správné řádky. Zkontroluj, jestli je v CSV jako oddělovač použit středník (;).</p>`;
             }
         })
-        .catch(chyba => console.error('Chyba při načítání CSV:', chyba));
+        .catch(chyba => {
+            // Vypíše chybu přímo na web místo prázdného místa!
+            const kontejner = document.getElementById('expozice-kontejner');
+            if (kontejner) {
+                kontejner.innerHTML = `<p style="color: #00f2fe; text-align: center; width: 100%; font-size: 1.2rem; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;"><b>Kritická chyba:</b> ${chyba.message}</p>`;
+            }
+            console.error('Chyba při načítání CSV:', chyba);
+        });čítání CSV:', chyba));
