@@ -89,19 +89,26 @@ function scrollCarousel(smer) {
 // --- 4. DYNAMICKÉ NAČÍTÁNÍ Z CSV (S DIAGNOSTIKOU) ---
     fetch('data.csv')
         .then(odpoved => {
-            // Kontrola, jestli GitHub ten soubor vůbec našel
+            const kontejner = document.getElementById('expozice-kontejner');
             if (!odpoved.ok) {
-                throw new Error("Soubor data.csv nebyl nalezen (Chyba 404). Zkontroluj název a koncovku na GitHubu!");
+                // Pokud GitHub soubor nenajde, vypíše chybu přímo na web!
+                if(kontejner) kontejner.innerHTML = `<div style="background: rgba(255,0,0,0.3); border: 2px solid red; padding: 20px; border-radius: 10px; text-align: center;"><h3 style="color: white;">🚨 CHYBA 404: Soubor 'data.csv' nebyl nalezen!</h3><p style="color: white;">Běž na svůj GitHub a zkontroluj:<br>1. Máš tam soubor data.csv?<br>2. Není tam velké písmeno (Data.csv)?<br>3. Nemá to dvojitou koncovku (data.csv.txt)?</p></div>`;
+                throw new Error("Soubor nenalezen");
             }
             return odpoved.text();
         })
         .then(data => {
-            const radky = data.split(/\r?\n/); 
             const kontejner = document.getElementById('expozice-kontejner');
-            
             if (!kontejner) return;
-            kontejner.innerHTML = ''; 
 
+            // Pojistka: GitHub někdy při chybě nenápadně podstrčí chybovou HTML stránku
+            if (data.includes('<html') || data.includes('<!DOCTYPE')) {
+                kontejner.innerHTML = `<div style="background: rgba(255,0,0,0.3); border: 2px solid red; padding: 20px; border-radius: 10px; text-align: center;"><h3 style="color: white;">🚨 CHYBA: Místo CSV se načetla chybová HTML stránka GitHubu.</h3><p style="color: white;">Opět - zkontroluj přesný název souboru data.csv na GitHubu (velká/malá písmena a přípony).</p></div>`;
+                return;
+            }
+
+            const radky = data.split(/\r?\n/); 
+            kontejner.innerHTML = ''; 
             let nactenoKaret = 0;
 
             for (let i = 1; i < radky.length; i++) {
@@ -130,16 +137,9 @@ function scrollCarousel(smer) {
                 }
             }
 
-            // Pokud se načetl soubor, ale nebyla v něm správná data
+            // Pokud se načetlo 0 karet (např. protože je v CSV špatný oddělovač)
             if (nactenoKaret === 0) {
-                kontejner.innerHTML = `<p style="color: #ff007f; text-align: center; width: 100%; font-size: 1.2rem;">Soubor se načetl, ale nenašly se v něm žádné správné řádky. Zkontroluj, jestli je v CSV jako oddělovač použit středník (;).</p>`;
+                 kontejner.innerHTML = `<div style="background: rgba(255,255,0,0.2); border: 2px solid yellow; padding: 20px; border-radius: 10px; text-align: center;"><h3 style="color: white;">⚠️ Soubor data.csv se našel, ale je prázdný nebo špatně naformátovaný.</h3><p style="color: white;">Otevři data.csv a zkontroluj, že jsi texty oddělil středníkem (;).</p></div>`;
             }
         })
-        .catch(chyba => {
-            // Vypíše chybu přímo na web místo prázdného místa!
-            const kontejner = document.getElementById('expozice-kontejner');
-            if (kontejner) {
-                kontejner.innerHTML = `<p style="color: #00f2fe; text-align: center; width: 100%; font-size: 1.2rem; background: rgba(0,0,0,0.5); padding: 20px; border-radius: 10px;"><b>Kritická chyba:</b> ${chyba.message}</p>`;
-            }
-            console.error('Chyba při načítání CSV:', chyba);
-        });čítání CSV:', chyba));
+        .catch(chyba => console.error('Chyba:', chyba));
