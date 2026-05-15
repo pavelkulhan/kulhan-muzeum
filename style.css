@@ -1,16 +1,8 @@
-/* =======================================================================================
-   CHROMA MUSEUM - NÁVRAT K NEONOVÉ PALETĚ (Pinks & Blues)
-   ======================================================================================= */
-
-/* --- Proměnné a VRÁCENÉ BARVY --- */
 :root {
-    --bg-main: #0f0c29;      /* Tmavý podklad */
+    --bg-main: #0f0c29;      
     --bg-gradient: linear-gradient(135deg, #302b63, #24243e, #0f0c29);
-    
-    /* Vrácené neonové akcenty z Image 0 */
-    --accent-1: #ff007f;     /* Růžová/Magenta */
-    --accent-2: #00f2fe;     /* Světle modrá/Cyan */
-    
+    --accent-1: #ff007f;     
+    --accent-2: #00f2fe;     
     --text-light: #f5f6fa;
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
@@ -23,7 +15,6 @@
     font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
 }
 
-/* Kritérium zadání: Responzivnost pro zařízení 576px - 1440px */
 body {
     background: var(--bg-main);
     background-image: var(--bg-gradient);
@@ -37,7 +28,6 @@ body {
 .py-5 { padding: 4rem 0; }
 .text-center { text-align: center; }
 
-/* Univerzální skleněný efekt (Glassmorphism) */
 .glass-box {
     background: var(--glass-bg);
     backdrop-filter: blur(20px);
@@ -48,7 +38,6 @@ body {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Nadpisy sekcí s gradientem textu (Růžová -> Modrá) */
 .section-title { 
     text-align: center; 
     margin-bottom: 2rem; 
@@ -59,12 +48,10 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: transparent; /* Fallback */
+    color: transparent; 
 }
 
-/* =======================================================================================
-   STICKY NAVIGACE (ZACHOVÁNO: LOGO + TEXT CHROMA)
-   ======================================================================================= */
+/* Hlavička a Logo */
 header {
     position: sticky;
     top: 0;
@@ -77,55 +64,22 @@ header {
 }
 
 .nav-container { display: flex; flex-direction: column; align-items: center; }
+.logo-wrapper { margin-bottom: 10px; }
+.logo-link { display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; }
+.logo-icon { height: 40px; width: auto; display: block; transition: height 0.3s ease; }
 
-/* KONTEJNER PRO LOGO + TEXT CHROMA */
-.logo-wrapper {
-    margin-bottom: 10px;
-}
-
-.logo-link {
-    display: flex;
-    align-items: center; /* Zarovná ikonu a text svisle na střed */
-    gap: 15px; /* Mezera mezi ikonou a nápisem */
-    text-decoration: none;
-    color: white;
-}
-
-/* Ikona loga */
-.logo-icon {
-    height: 40px; /* Menší na mobilu */
-    width: auto;
-    display: block;
-    transition: height 0.3s ease;
-}
-
-/* Nápis CHROMA vedle loga - s neonovým gradientem */
 .logo-link h1 {
-    font-weight: 900;
-    letter-spacing: 2px;
-    font-size: 1.5rem; /* Menší na mobilu */
-    text-transform: uppercase;
+    font-weight: 900; letter-spacing: 2px; font-size: 1.5rem; text-transform: uppercase;
     background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
 }
 
-/* Navigační odkazy */
-.nav-links { 
-    list-style: none; 
-    display: flex; 
-    gap: 15px; 
-    flex-wrap: wrap; 
-    justify-content: center;
-}
+.nav-links { list-style: none; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
 .nav-links a {
     color: var(--text-light); text-decoration: none; font-weight: 600;
     text-transform: uppercase; font-size: 0.8rem; position: relative; transition: color 0.3s;
 }
-
-/* Linka pod odkazem - barva Tyrkysová */
 .nav-links a::after {
     content: ''; position: absolute; width: 0%; height: 2px;
     bottom: -5px; left: 0; background: var(--accent-2); transition: width 0.3s;
@@ -133,158 +87,110 @@ header {
 .nav-links a:hover::after { width: 100%; }
 .nav-links a:hover { color: var(--accent-2); }
 
-/* --- Úvodní Banner s PARALLAX fotkou (Zpět na fixed) --- */
+/* Banner */
 .banner {
     background: url('images/obrazek5.jpg') no-repeat center center;
-    background-size: cover;
-    background-attachment: scroll; /* Na mobilu vypneme fixed, aby se to nezasekávalo */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 70vh;
-    padding: 2rem 0;
+    background-size: cover; background-attachment: scroll;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 70vh; padding: 2rem 0;
 }
-
 .banner .glass-box { max-width: 600px; text-align: center; margin: 0 auto; }
 .banner h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 15px; font-weight: 800; }
 .banner p { font-size: 1rem; margin-bottom: 25px; }
 
-/* Tlačítko - barva Růžová -> Modrá */
 .btn-primary {
-    display: inline-block; 
-    background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+    display: inline-block; background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
     color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none;
     font-weight: bold; text-transform: uppercase; transition: transform 0.3s, box-shadow 0.3s; border: none; font-size: 0.9rem;
 }
 .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 0, 127, 0.4); }
 
-/* --- Posuvník (Carousel) (Funguje responzivně) --- */
+/* Carousel */
 .carousel-wrapper { display: flex; align-items: center; position: relative; }
 .carousel-container { display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 20px; padding: 15px 0; }
 .carousel-container::-webkit-scrollbar { display: none; }
-
 .carousel-item { flex: 0 0 80%; position: relative; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 .carousel-item img { width: 100%; display: block; height: 250px; object-fit: cover; transition: transform 0.5s; }
 .carousel-item:hover img { transform: scale(1.1); }
-
 .carousel-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.9)); padding: 20px; text-align: center; }
 .carousel-caption h3 { font-size: 1rem; color: white;}
-
-/* Šipky posuvníku - barva Růžová */
 .carousel-btn { 
     background: rgba(15, 12, 41, 0.6); backdrop-filter: blur(5px); color: white; border: 1px solid var(--glass-border); border-radius: 50%;
     width: 40px; height: 40px; cursor: pointer; font-size: 1rem; z-index: 10; transition: background 0.3s;
 }
 .carousel-btn:hover { background: var(--accent-1); border-color: var(--accent-1); }
 
-/* --- Odpočet (Timer) - Modré akcenty --- */
+/* Odpočet */
 .countdown-section { background: url('images/obrazek6.jpg') center/cover scroll; }
 .countdown-section h2 { font-size: 1.5rem; margin-bottom: 10px; color: white; background: none; -webkit-text-fill-color: white;}
-
 .countdown-timer { display: flex; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: wrap;}
-.countdown-timer div { 
-    background: rgba(0,0,0,0.7); 
-    border: 2px solid var(--accent-2); /* Modrá */
-    padding: 10px; border-radius: 10px; min-width: 70px; text-align: center;
-}
+.countdown-timer div { background: rgba(0,0,0,0.7); border: 2px solid var(--accent-2); padding: 10px; border-radius: 10px; min-width: 70px; text-align: center; }
 .countdown-timer span { font-size: 1.8rem; font-weight: bold; color: var(--accent-2); }
 .countdown-timer p { font-size: 0.8rem; text-transform: uppercase; margin-top: 5px; opacity: 0.8; color: white;}
 
-/* --- Grid Expozice (Dynamické načítání) --- */
+/* Expozice CSV */
 .grid-expozice { display: grid; grid-template-columns: 1fr; gap: 20px; }
-
 .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px; overflow: hidden; transition: transform 0.3s, border-color 0.3s; }
 .card:hover { transform: translateY(-10px); border-color: var(--accent-1); }
-
-/* CSS pro JS karty */
 .card-img { height: 150px; width: 100%; }
 .card-body { padding: 20px; }
 .card-body h3 { font-size: 1.2rem; margin: 10px 0; color: white;}
 .card-body p { font-size: 0.9rem; opacity: 0.9; color: white;}
-/* Badge - barva Tyrkysová */
 .badge { background: rgba(0, 242, 254, 0.1); border: 1px solid var(--accent-2); color: var(--accent-2); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; text-transform: uppercase; font-weight: bold;}
 
-/* --- Formulář a Recenze --- */
+/* Formulář a Recenze */
 .form-wrapper { max-width: 600px; margin: 0 auto; }
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; color: white;}
-.form-group input, .form-group select { 
-    width: 100%; padding: 12px; border-radius: 8px; 
-    background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); 
-    color: white; font-size: 0.9rem;
-}
+.form-group input, .form-group select { width: 100%; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); color: white; font-size: 0.9rem; }
 .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--accent-1); box-shadow: 0 0 10px rgba(255, 0, 127, 0.2); }
-
-/* Tlačítko - barva Růžová */
 .btn-submit { width: 100%; border-radius: 8px; margin-top: 10px; cursor: pointer; padding: 12px; background: linear-gradient(45deg, var(--accent-1), var(--accent-2)); color: white; font-weight: bold; border: none; text-transform: uppercase; font-size: 1rem; transition: background 0.3s ease;}
 .btn-submit:hover { opacity: 0.9; }
 
-/* Recenze */
 .grid-reviews { display: grid; grid-template-columns: 1fr; gap: 20px; }
 .review-box { font-size: 0.9rem;}
 .gradient-border { position: relative; background: var(--glass-bg); padding: 20px; border-radius: 15px; }
-/* Barevná linka - barva Růžová */
 .gradient-border::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent-1); border-radius: 15px 0 0 15px; }
 .review-box strong { display: block; margin-top: 10px; color: var(--accent-1);}
 
-/* --- FAQ --- */
-.faq-question { 
-    width: 100%; background: var(--glass-bg); border: 1px solid var(--glass-border); 
-    padding: 15px; text-align: left; cursor: pointer; color: white; 
-    font-size: 1rem; border-radius: 8px; margin-bottom: 8px; transition: 0.3s;
-    font-weight: 600;
-}
+/* FAQ */
+.faq-question { width: 100%; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px; text-align: left; cursor: pointer; color: white; font-size: 1rem; border-radius: 8px; margin-bottom: 8px; transition: 0.3s; font-weight: 600; }
 .faq-question:hover { background: rgba(255, 0, 127, 0.05); border-color: var(--accent-1); }
 .faq-answer { display: none; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 0 0 8px 8px; margin-top: -8px; margin-bottom: 12px; font-size: 0.9rem;}
 .faq-answer.active { display: block; }
 
-/* --- Patička --- */
+/* Patička */
 .footer { border-top: 1px solid var(--glass-border); padding: 40px 0 20px; margin-top: 40px; font-size: 0.9rem; background: rgba(15, 12, 41, 0.95);}
-/* Nadpisy v patičce - Tyrkysová */
 .contact-info h3 { color: var(--accent-2); margin-bottom: 10px; font-size: 1.2rem; }
 .contact-info p { margin-bottom: 5px;}
 .footer-bottom { text-align: center; margin-top: 30px; border-top: 1px solid var(--glass-border); padding-top: 15px; font-size: 0.8rem; opacity: 0.6; color: #888; }
 
-/* =======================================================================================
-   RESPONZIVITA (Media Queries)
-   ======================================================================================= */
-
-/* Pro zařízení větší než malý mobil */
+/* Responzivita */
 @media (min-width: 576px) {
     body { font-size: 17px; }
-    
-    /* Úprava záhlaví pro PC - Logo a Text vedle sebe */
     .nav-container { flex-direction: row; justify-content: space-between; padding: 0.5rem 0; align-items: center;}
     .logo-wrapper { margin-bottom: 0; }
-    .logo-icon { height: 50px; } /* Větší ikona na PC */
-    .logo-link h1 { font-size: 1.8rem; } /* Větší text na PC */
-    
+    .logo-icon { height: 50px; } 
+    .logo-link h1 { font-size: 1.8rem; } 
     .nav-links { margin-top: 0; gap: 20px; justify-content: flex-end;}
     .nav-links a { font-size: 0.9rem; }
-
     .py-5 { padding: 5rem 0; }
     .glass-box { padding: 30px; }
     .section-title { font-size: 2.3rem; margin-bottom: 2.5rem; }
-
-    .banner { min-height: 80vh; background-attachment: fixed; } /* Parallax na PC */
+    .banner { min-height: 80vh; background-attachment: fixed; } 
     .banner h1 { font-size: 3rem; }
     .countdown-section { background-attachment: fixed; }
     .countdown-section h2 { font-size: 2rem; }
     .countdown-timer span { font-size: 2.2rem; }
-
     .carousel-item { flex: 0 0 45%; }
     .carousel-item img { height: 300px; }
     .carousel-btn { width: 50px; height: 50px; font-size: 1.2rem; }
 }
-
-/* Pro tablety a PC */
 @media (min-width: 768px) {
     .grid-expozice { grid-template-columns: repeat(2, 1fr); }
     .grid-reviews { grid-template-columns: repeat(2, 1fr); }
     .footer-grid { grid-template-columns: repeat(2, 1fr); align-items: start; gap: 30px;}
 }
-
-/* Pro velké monitory */
 @media (min-width: 1024px) {
     .section-title { font-size: 2.5rem; margin-bottom: 3rem; }
     .banner h1 { font-size: 3.5rem; }
